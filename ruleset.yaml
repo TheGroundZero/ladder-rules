@@ -309,6 +309,28 @@
     - url: https://kw.be/nieuws/criminaliteit/geweld/in-40-jaar-nog-nooit-meegemaakt-chauffeur-meense-touroperator-krijgt-slag-in-gezicht-na-aanrijding-in-frankrijk/
       test: document.querySelector('#paywall-modal') === null
 
+- domains:
+  - www.tijd.be
+  headers:
+    x-forwarded-for: none
+    referer: https://news.google.com
+  injections:
+    - position: head
+      append: |
+        <script id="redirect">
+          document.addEventListener("DOMContentLoaded", () => {
+            if(document.getElementsByTagName("html")[0].className.includes("paywalled")) {
+              const loc = window.location;
+              window.location.replace(loc.origin + loc.pathname + "5" );
+            }
+          });
+        </script>
+  tests:
+    - url: https://www.tijd.be/politiek-economie/internationaal/vs/migratiedienst-ice-schiet-protesterende-vrouw-dood-in-minneapolis-burgemeester-is-woedend/10643170.html
+      test: document.querySelector('script[id=redirect]') != null
+    - url: https://www.tijd.be/politiek-economie/internationaal/vs/migratiedienst-ice-schiet-protesterende-vrouw-dood-in-minneapolis-burgemeester-is-woedend/10643170.html5
+      test: document.getElementsByTagName("html")[0].className.includes("paywalled") === false
+
 - domains: 
   - www.thestar.com
   - www.niagarafallsreview.ca
