@@ -2,7 +2,6 @@
   - www.tijd.be
   headers:
     x-forwarded-for: none
-    referer: https://news.google.com
   injections:
     - position: head
       append: |
